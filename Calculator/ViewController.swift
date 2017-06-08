@@ -21,12 +21,18 @@ class ViewController: UIViewController {
         
         if userIsInTheMiddleOfTypeing {
             let textCurrentlyInDisplay = display.text!
-            display.text = textCurrentlyInDisplay + digit
+            if userCanEnterDecimalPoint(digit, textCurrentlyInDisplay) {
+                display.text = textCurrentlyInDisplay + digit
+            }
         } else {
             display.text = digit
             userIsInTheMiddleOfTypeing = true
         }
         
+    }
+    
+    private func userCanEnterDecimalPoint(_ digit: String, _ currentText: String) -> Bool {
+            return digit != "." || !currentText.contains(".")
     }
     
     var displayValue: Double {
