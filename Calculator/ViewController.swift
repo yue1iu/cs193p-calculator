@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var displayPendingOperation: UILabel!
     
     var userIsInTheMiddleOfTypeing = false
     
@@ -28,7 +29,6 @@ class ViewController: UIViewController {
             display.text = digit
             userIsInTheMiddleOfTypeing = true
         }
-        
     }
     
     private func userCanEnterDecimalPoint(_ digit: String, _ currentText: String) -> Bool {
@@ -55,6 +55,7 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
+        displayPendingOperation.text = brain.pendingInfo;
     }
 }
 
