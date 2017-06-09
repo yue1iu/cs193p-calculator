@@ -35,7 +35,6 @@ struct CalculatorBrain {
         "x²" : Operation.unaryOperation({ pow($0, 2) }),
         "x³" : Operation.unaryOperation({ pow($0, 3) }),
         "e" : Operation.constant(M_E),
-        "1/x" : Operation.unaryOperation({ 1 / $0 }),
         "=" : Operation.equals
     ]
     
@@ -47,9 +46,9 @@ struct CalculatorBrain {
                 description += " \(symbol)"
             case .unaryOperation(let function):
                 if accumulator != nil {
-                    accumulator = function(accumulator!)
                     let accumulatorString = String(accumulator!)
-                    description += "\(symbol)(\(accumulatorString))"
+                    description += " \(symbol)(\(accumulatorString))"
+                    accumulator = function(accumulator!)
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
@@ -60,6 +59,7 @@ struct CalculatorBrain {
             case .equals:
                 performPendingBinaryOperation()
             }
+            
         }
     }
     
@@ -100,5 +100,11 @@ struct CalculatorBrain {
         get {
             return resultIsPending ? description + " ..." : description + " ="
         }
+    }
+    
+    mutating func reset() {
+        accumulator = nil
+        description = " "
+        pendingBinaryOperation = nil
     }
 }

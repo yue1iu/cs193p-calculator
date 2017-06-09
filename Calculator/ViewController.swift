@@ -57,5 +57,12 @@ class ViewController: UIViewController {
         }
         displayPendingOperation.text = brain.pendingInfo;
     }
+    
+    @IBAction func clear(_ sender: Any) {
+        display.text = "0"
+        userIsInTheMiddleOfTypeing = false
+        brain.reset()
+        displayPendingOperation.text = " "
+    }
 }
 
