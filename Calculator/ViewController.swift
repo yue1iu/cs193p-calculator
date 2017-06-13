@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
-        displayPendingOperation.text = brain.pendingInfo;
+        displayPendingOperation.text = brain.description;
     }
     
     @IBAction func setVariable(_ sender: UIButton) {

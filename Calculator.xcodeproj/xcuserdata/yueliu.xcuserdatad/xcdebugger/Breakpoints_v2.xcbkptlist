@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calculator/CalculatorBrain.swift"
-            timestampString = "519039110.721665"
+            timestampString = "519041000.129651"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "performPendingBinaryOperation()"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "evaluate(using:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calculator/CalculatorBrain.swift"
-            timestampString = "519039951.199352"
+            timestampString = "519040692.02468"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "evaluate(using:)"
             landmarkType = "7">
          </BreakpointContent>
