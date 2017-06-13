@@ -25,6 +25,14 @@ struct CalculatorBrain {
         case equals
     }
     
+    private enum InputTypes {
+        case operand(Double)
+        case variable(String)
+        case operation(Operation)
+    }
+    
+    private var pendingInputs = [InputTypes]()
+    
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
         "√" : Operation.unaryOperation(sqrt),
@@ -42,6 +50,8 @@ struct CalculatorBrain {
     
     mutating func performOperation(_ symbol: String) {
         if let operation = operations[symbol] {
+            pendingInputs.append(.operation(operation))
+            
             switch operation {
             case .constant(let value):
                 accumulator = value
@@ -85,6 +95,8 @@ struct CalculatorBrain {
     }
     
     mutating func setOperand(_ operand: Double) {
+        pendingInputs.append(.operand(operand))
+        
         accumulator = operand
         if(!resultIsPending) {
             description += " \(operand)"
@@ -92,6 +104,8 @@ struct CalculatorBrain {
     }
     
     mutating func setOperand(variable named: String) {
+        pendingInputs.append(.variable(named))
+        
         accumulator = variables?[named] ?? 0.0
         description += " \(named)"
         print("setOperand variable named: \(named) with value \(accumulator)")
@@ -99,7 +113,20 @@ struct CalculatorBrain {
     
     func evaluate(using variables: Dictionary<String, Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {
         
-        return (0.0, false, "")
+        var accumulator: Double?
+        
+        for input in pendingInputs {
+            switch input {
+            case .operand(let value):
+                accumulator = value
+            case .variable(let name):
+                accumulator = variables?[name] ?? 0.0
+            case .operation:
+                break
+            }
+        }
+        
+        return (accumulator, false, "")
     }
     
     var result: Double? {
@@ -124,5 +151,6 @@ struct CalculatorBrain {
         accumulator = nil
         description = " "
         pendingBinaryOperation = nil
+        pendingInputs.removeAll()
     }
 }
