@@ -16,6 +16,8 @@ struct CalculatorBrain {
     
     private var description: String = " "
     
+    private var variables: Dictionary<String, Double>?
+    
     private  enum Operation {
         case constant(Double)
         case unaryOperation((Double) -> Double)
@@ -46,11 +48,15 @@ struct CalculatorBrain {
                 description += " \(symbol)"
             case .unaryOperation(let function):
                 if accumulator != nil {
-                    let accumulatorString = String(accumulator!)
-                    description += " \(symbol)(\(accumulatorString))"
+                    if(resultIsPending) {
+                        description += " \(symbol)(\(accumulator!))"
+                    } else {
+                        description = " \(symbol)(\(description))"
+                    }
                     accumulator = function(accumulator!)
                 }
             case .binaryOperation(let function):
+                performPendingBinaryOperation()
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperaiton(function: function, firstOperand: accumulator!)
                     accumulator = nil
@@ -59,7 +65,6 @@ struct CalculatorBrain {
             case .equals:
                 performPendingBinaryOperation()
             }
-            
         }
     }
     
@@ -81,7 +86,20 @@ struct CalculatorBrain {
     
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
-        description += " \(operand)"
+        if(!resultIsPending) {
+            description += " \(operand)"
+        }
+    }
+    
+    mutating func setOperand(variable named: String) {
+        accumulator = variables?[named] ?? 0.0
+        description += " \(named)"
+        print("setOperand variable named: \(named) with value \(accumulator)")
+    }
+    
+    func evaluate(using variables: Dictionary<String, Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {
+        
+        return (0.0, false, "")
     }
     
     var result: Double? {

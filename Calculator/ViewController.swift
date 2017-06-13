@@ -58,6 +58,15 @@ class ViewController: UIViewController {
         displayPendingOperation.text = brain.pendingInfo;
     }
     
+    @IBAction func setVariable(_ sender: UIButton) {
+        displayValue = brain.evaluate(using: ["M": displayValue]).result!
+    }
+    
+    @IBAction func getVariable(_ sender: UIButton) {
+        brain.setOperand(variable: "M")
+    }
+    
+    
     @IBAction func clear(_ sender: Any) {
         display.text = "0"
         userIsInTheMiddleOfTypeing = false
