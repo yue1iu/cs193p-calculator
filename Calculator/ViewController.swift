@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     
     var userIsInTheMiddleOfTypeing = false
     
+    var variables = [String:Double]()
+    
     private var brain = CalculatorBrain()
     
     @IBAction func touchDigit(_ sender: UIButton) {
@@ -59,17 +61,34 @@ class ViewController: UIViewController {
     }
     
     @IBAction func setVariable(_ sender: UIButton) {
-        displayValue = brain.evaluate(using: ["M": displayValue]).result!
+        variables["M"] = displayValue
+        displayValue = brain.evaluate(using: variables).result!
     }
     
     @IBAction func getVariable(_ sender: UIButton) {
         brain.setOperand(variable: "M")
     }
     
+    @IBAction func undo(_ sender: UIButton) {
+        if(userIsInTheMiddleOfTypeing && display.text != " ") {
+            if let text = display.text {
+                display.text = text.substring(to: text.index(before: text.endIndex))
+                if((display.text?.characters.count)! < 1) {
+                    display.text = " "
+                    userIsInTheMiddleOfTypeing = false
+                }
+            }
+        } else {
+            brain.undo()
+            displayValue = brain.evaluate(using: variables).result ?? 0.0
+            displayPendingOperation.text = brain.description;
+        }
+    }
     
-    @IBAction func clear(_ sender: Any) {
+    @IBAction func clear(_ sender: UIButton) {
         display.text = "0"
         userIsInTheMiddleOfTypeing = false
+        variables.removeAll()
         brain.reset()
         displayPendingOperation.text = " "
     }

@@ -131,4 +131,11 @@ struct CalculatorBrain {
     mutating func reset() {
         pendingInputs.removeAll()
     }
+    
+    mutating func undo() {
+        print("undo")
+        if(!pendingInputs.isEmpty) {
+            pendingInputs.removeLast()
+        }
+    }
 }
